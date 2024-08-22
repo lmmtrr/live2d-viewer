@@ -188,9 +188,7 @@ function handleFilterInput(e) {
 
 function handleParameterSliderChange(e) {
   const inputs = Array.from(
-    document
-      .getElementById("parameters")
-      .querySelectorAll('input[type="range"]')
+    document.getElementById("parameter").querySelectorAll('input[type="range"]')
   );
   const index = inputs.indexOf(e.target);
   const parameterValues = currentModel.internalModel.coreModel._parameterValues;

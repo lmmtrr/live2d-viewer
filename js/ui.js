@@ -41,8 +41,8 @@ function createParameterUI() {
   const parameterMinimumValues =
     currentModel.internalModel.coreModel._parameterMinimumValues;
   const parameterValues = currentModel.internalModel.coreModel._parameterValues;
-  const parameters = document.getElementById("parameters");
-  parameters.style.display = "block";
+  const parameter = document.getElementById("parameter");
+  parameter.style.display = "block";
   parameterIds.forEach((value, index) => {
     const div = document.createElement("div");
     div.className = "item";
@@ -58,7 +58,7 @@ function createParameterUI() {
     input.value = parameterValues[index];
     div.appendChild(label);
     div.appendChild(input);
-    parameters.appendChild(div);
+    parameter.appendChild(div);
   });
 }
 
@@ -71,8 +71,8 @@ function createPartUI() {
     const sb = String(b).replace(/(\d+)/g, (m) => m.padStart(3, "0"));
     return sa < sb ? -1 : sa > sb ? 1 : 0;
   });
-  const parts = document.getElementById("parts");
-  parts.style.display = "none";
+  const part = document.getElementById("part");
+  part.style.display = "none";
   for (let i = 0; i < a.length; i++) {
     const div = document.createElement("div");
     div.className = "item";
@@ -85,7 +85,7 @@ function createPartUI() {
     input.dataset.oldIndex = String(a[i][1]);
     label.appendChild(input);
     div.appendChild(label);
-    parts.appendChild(div);
+    part.appendChild(div);
   }
 }
 
@@ -103,8 +103,8 @@ function createDrawableUI() {
     const sb = String(b).replace(/(\d+)/g, (m) => m.padStart(3, "0"));
     return sa < sb ? -1 : sa > sb ? 1 : 0;
   });
-  const drawables = document.getElementById("drawables");
-  drawables.style.display = "none";
+  const drawable = document.getElementById("drawable");
+  drawable.style.display = "none";
   for (let i = 0; i < a.length; i++) {
     if (Math.round(opacities[a[i][1]])) {
       const div = document.createElement("div");
@@ -118,7 +118,7 @@ function createDrawableUI() {
       input.dataset.oldIndex = String(a[i][1]);
       label.appendChild(input);
       div.appendChild(label);
-      drawables.appendChild(div);
+      drawable.appendChild(div);
     }
   }
 }
@@ -126,33 +126,33 @@ function createDrawableUI() {
 export function resetUI() {
   resetValues();
   document.getElementById("container").scrollTop = 0;
-  document.getElementById("parameters").innerHTML = "";
-  document.getElementById("parts").innerHTML = "";
-  document.getElementById("drawables").innerHTML = "";
+  document.getElementById("parameter").innerHTML = "";
+  document.getElementById("part").innerHTML = "";
+  document.getElementById("drawable").innerHTML = "";
   createParameterUI();
   createPartUI();
   createDrawableUI();
 }
 
 export function switchUI() {
-  const parameters = document.getElementById("parameters");
-  const parts = document.getElementById("parts");
-  const drawables = document.getElementById("drawables");
+  const parameter = document.getElementById("parameter");
+  const part = document.getElementById("part");
+  const drawable = document.getElementById("drawable");
   switch (custom) {
     case "parameters":
-      parameters.style.display = "block";
-      parts.style.display = "none";
-      drawables.style.display = "none";
+      parameter.style.display = "block";
+      part.style.display = "none";
+      drawable.style.display = "none";
       break;
     case "parts":
-      parameters.style.display = "none";
-      parts.style.display = "block";
-      drawables.style.display = "none";
+      parameter.style.display = "none";
+      part.style.display = "block";
+      drawable.style.display = "none";
       break;
     case "drawables":
-      parameters.style.display = "none";
-      parts.style.display = "none";
-      drawables.style.display = "block";
+      parameter.style.display = "none";
+      part.style.display = "none";
+      drawable.style.display = "block";
       break;
   }
 }
