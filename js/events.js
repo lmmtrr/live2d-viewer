@@ -45,7 +45,6 @@ export function resetValues() {
 }
 
 export function setupEventListeners() {
-  document.onkeydown = handleKeyboardInput;
   window.addEventListener("resize", handleResize);
   canvas.addEventListener("mousedown", handleMouseDown);
   canvas.addEventListener("mousemove", handleMouseMove);
