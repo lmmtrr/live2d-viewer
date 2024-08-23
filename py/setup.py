@@ -20,7 +20,7 @@ def find_model_files(base_dir):
 folders = find_model_files("../assets/")
 folders = OrderedDict(sorted(folders.items(), key=lambda t: t[0]))
 
-with open("../js/setup.js", "w") as f:
+with open("../js/setup.js", "w", encoding="utf-8") as f:
     first_folder = sorted(folders.keys())[0]
     f.write(f'export let folder = "{first_folder}";\n')
     f.write(f"export const folders = {json.dumps(folders)};\n")

@@ -61,23 +61,6 @@ export function setupEventListeners() {
   container.addEventListener("input", handleCheckboxChange);
 }
 
-function changeCharacter(delta) {
-  charaIndex = (charaIndex + delta + charaIds.length) % charaIds.length;
-  characterSelector.selectedIndex = charaIndex;
-  if (app.stage.children.length > 0) app.stage.removeChildAt(0);
-  load();
-}
-
-function handleKeyboardInput(e) {
-  switch (e.key) {
-    case "z":
-    case "x":
-      e.preventDefault();
-      changeCharacter(e.key === "z" ? -1 : 1);
-      break;
-  }
-}
-
 function handleResize() {
   const { innerWidth: w, innerHeight: h } = window;
   canvas.width = w;
