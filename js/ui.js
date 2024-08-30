@@ -1,4 +1,4 @@
-import { custom, resetValues, setOpacities } from "./events.js";
+import { resetValues, setOpacities, setting } from "./events.js";
 import { currentModel } from "./main.js";
 
 export function createFolderSelector(folders) {
@@ -11,13 +11,13 @@ export function createFolderSelector(folders) {
   });
 }
 
-export function createCharacterSelector(charaIds) {
-  const characterSelector = document.getElementById("characterSelector");
+export function createSceneSelector(sceneIds) {
+  const sceneSelector = document.getElementById("sceneSelector");
   let s = "";
-  for (let charaId of charaIds) {
-    s += `<option value="${charaId}">${charaId}</option>`;
+  for (let sceneId of sceneIds) {
+    s += `<option value="${sceneId}">${sceneId}</option>`;
   }
-  characterSelector.innerHTML = s;
+  sceneSelector.innerHTML = s;
 }
 
 export function createAnimationSelector(motions) {
@@ -138,7 +138,7 @@ export function switchUI() {
   const parameter = document.getElementById("parameter");
   const part = document.getElementById("part");
   const drawable = document.getElementById("drawable");
-  switch (custom) {
+  switch (setting) {
     case "parameters":
       parameter.style.display = "block";
       part.style.display = "none";

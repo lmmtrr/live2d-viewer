@@ -1,6 +1,6 @@
-import { app, load, currentModel } from "./main.js";
-import { charaIds, folder, folders, setCharaIds, setFolder } from "./setup.js";
-import { createCharacterSelector, switchUI } from "./ui.js";
+import { app, currentModel, load } from "./main.js";
+import { folder, folders, sceneIds, setFolder, setSceneIds } from "./setup.js";
+import { createSceneSelector, switchUI } from "./ui.js";
 
 const scaleInit = 1;
 const scaleMax = 2;
@@ -12,21 +12,21 @@ export let scale = scaleInit;
 export let moveX = 0;
 export let moveY = 0;
 export let rotate = 0;
-export let charaIndex = 0;
+export let sceneIndex = 0;
 let startX = 0;
 let startY = 0;
 let mouseDown = false;
 let isMove = false;
 export let premultipliedAlpha = false;
-export let custom = "parameters";
+export let setting = "parameters";
 let opacities;
 
 const canvas = document.getElementById("canvas");
 const toggleButton = document.getElementById("toggleButton");
 const folderSelector = document.getElementById("folderSelector");
-const characterSelector = document.getElementById("characterSelector");
+const sceneSelector = document.getElementById("sceneSelector");
 const animationSelector = document.getElementById("animationSelector");
-const customSelector = document.getElementById("customSelector");
+const settingSelector = document.getElementById("settingSelector");
 const filterBox = document.getElementById("filterBox");
 const container = document.getElementById("container");
 
@@ -39,12 +39,13 @@ export function resetValues() {
   moveX = 0;
   moveY = 0;
   rotate = 0;
-  custom = "parameters";
-  customSelector.value = "parameters";
+  setting = "parameters";
+  settingSelector.value = "parameters";
   filterBox.value = "";
 }
 
 export function setupEventListeners() {
+  document.onkeydown = handleKeyboardInput;
   window.addEventListener("resize", handleResize);
   canvas.addEventListener("mousedown", handleMouseDown);
   canvas.addEventListener("mousemove", handleMouseMove);
@@ -53,11 +54,41 @@ export function setupEventListeners() {
   canvas.addEventListener("wheel", handleWheel);
   toggleButton.addEventListener("click", toggleSidebar);
   folderSelector.addEventListener("change", handleFolderChange);
-  characterSelector.addEventListener("change", handleCharacterChange);
+  sceneSelector.addEventListener("change", handleSceneChange);
   animationSelector.addEventListener("change", handleAnimationChange);
-  customSelector.addEventListener("change", handleCustomChange);
+  settingSelector.addEventListener("change", handlesettingChange);
   filterBox.addEventListener("input", handleFilterInput);
   container.addEventListener("input", handleCheckboxChange);
+}
+
+function nextScene() {
+  sceneSelector.focus();
+  sceneIndex = (sceneSelector.selectedIndex + 1) % sceneSelector.options.length;
+  sceneSelector.selectedIndex = sceneIndex;
+  handleSceneChange_();
+}
+
+function nextAnimation() {
+  animationSelector.focus();
+  let animationIndex =
+    (animationSelector.selectedIndex + 1) % animationSelector.options.length;
+  animationSelector.selectedIndex = animationIndex;
+  const [motion, index] = animationSelector.value.split(",");
+  handleAnimationChange_(motion, index);
+}
+
+function handleKeyboardInput(e) {
+  if (!e.ctrlKey) return;
+  switch (e.key) {
+    case "s":
+      e.preventDefault();
+      nextScene();
+      break;
+    case "a":
+      e.preventDefault();
+      nextAnimation();
+      break;
+  }
 }
 
 function handleResize() {
@@ -129,30 +160,38 @@ function toggleSidebar() {
 
 function handleFolderChange(e) {
   setFolder(e.target.value);
-  setCharaIds(folders[folder]);
-  createCharacterSelector(charaIds);
-  charaIndex = 0;
+  setSceneIds(folders[folder]);
+  createSceneSelector(sceneIds);
+  sceneIndex = 0;
   resetValues();
   if (app.stage.children.length > 0) app.stage.removeChildAt(0);
   load();
 }
 
-async function handleCharacterChange(e) {
-  charaIndex = e.target.selectedIndex;
+async function handleSceneChange_() {
   resetValues();
   if (app.stage.children.length > 0) app.stage.removeChildAt(0);
   load();
 }
 
-function handleAnimationChange(e) {
-  const [motion, index] = e.target.value.split(",");
+async function handleSceneChange(e) {
+  sceneIndex = e.target.selectedIndex;
+  handleSceneChange_();
+}
+
+async function handleAnimationChange_(motion, index) {
   const motionManager = app.stage.children[0].internalModel.motionManager;
   motionManager.stopAllMotions();
   motionManager.startMotion(motion, Number(index), 1);
 }
 
-function handleCustomChange(e) {
-  custom = e.target.value;
+function handleAnimationChange(e) {
+  const [motion, index] = e.target.value.split(",");
+  handleSceneChange_(motion, index);
+}
+
+function handlesettingChange(e) {
+  setting = e.target.value;
   switchUI();
 }
 
@@ -191,7 +230,7 @@ function handleDrawableCheckboxChange(e) {
 }
 
 function handleCheckboxChange(e) {
-  switch (custom) {
+  switch (setting) {
     case "parameters":
       handleParameterSliderChange(e);
       break;

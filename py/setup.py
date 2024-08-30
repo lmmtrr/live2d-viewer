@@ -24,10 +24,10 @@ with open("../js/setup.js", "w", encoding="utf-8") as f:
     first_folder = sorted(folders.keys())[0]
     f.write(f'export let folder = "{first_folder}";\n')
     f.write(f"export const folders = {json.dumps(folders)};\n")
-    f.write(f"export let charaIds = {json.dumps(folders[first_folder])};\n")
+    f.write(f"export let sceneIds = {json.dumps(folders[first_folder])};\n")
     f.write(f"export function setFolder(value) {{\n")
     f.write(f"  folder = value;\n")
     f.write(f"}}\n")
-    f.write(f"export function setCharaIds(value) {{\n")
-    f.write(f"  charaIds = value;\n")
+    f.write(f"export function setSceneIds(value) {{\n")
+    f.write(f"  sceneIds = value;\n")
     f.write(f"}}\n")
