@@ -1,13 +1,13 @@
 import { resetValues, setOpacities, setting } from "./events.js";
 import { currentModel } from "./main.js";
 
-export function createFolderSelector(folders) {
-  const folderSelector = document.getElementById("folderSelector");
-  Object.keys(folders).forEach((folder) => {
+export function createDirSelector(dirFiles) {
+  const dirSelector = document.getElementById("dirSelector");
+  Object.keys(dirFiles).forEach((dir) => {
     let optionElement = document.createElement("option");
-    optionElement.value = folder;
-    optionElement.textContent = folder;
-    folderSelector.appendChild(optionElement);
+    optionElement.value = dir;
+    optionElement.textContent = dir;
+    dirSelector.appendChild(optionElement);
   });
 }
 

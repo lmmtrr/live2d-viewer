@@ -1,9 +1,9 @@
 import { scale, sceneIndex, setupEventListeners } from "./events.js";
-import { folder, folders, sceneIds } from "./setup.js";
+import { dir, dirFiles, sceneIds } from "./setup.js";
 import {
   createAnimationSelector,
   createSceneSelector,
-  createFolderSelector,
+  createDirSelector,
   resetUI,
 } from "./ui.js";
 
@@ -15,7 +15,7 @@ const {
 
 export async function load() {
   currentModel = await Live2DModel.from(
-    `assets/${folder}/${sceneIds[sceneIndex]}`,
+    `assets/${dir}/${sceneIds[sceneIndex]}`,
     { autoInteract: false }
   );
   currentModel.interactive = true;
@@ -30,7 +30,7 @@ export async function load() {
 
 (async function main() {
   setupEventListeners();
-  createFolderSelector(folders);
+  createDirSelector(dirFiles);
   createSceneSelector(sceneIds);
   app = new PIXI.Application({
     view: canvas,

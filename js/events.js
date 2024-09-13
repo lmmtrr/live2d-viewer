@@ -1,5 +1,5 @@
 import { app, currentModel, load } from "./main.js";
-import { folder, folders, sceneIds, setFolder, setSceneIds } from "./setup.js";
+import { dir, dirFiles, sceneIds, setDir, setSceneIds } from "./setup.js";
 import { createSceneSelector, switchUI } from "./ui.js";
 
 const scaleInit = 1;
@@ -21,9 +21,14 @@ export let premultipliedAlpha = false;
 export let setting = "parameters";
 let opacities;
 
+const rootStyles = getComputedStyle(document.documentElement);
+const sidebarWidth = Number(
+  rootStyles.getPropertyValue("--sidebar-width").replace("px", "")
+);
+
 const canvas = document.getElementById("canvas");
 const toggleButton = document.getElementById("toggleButton");
-const folderSelector = document.getElementById("folderSelector");
+const dirSelector = document.getElementById("dirSelector");
 const sceneSelector = document.getElementById("sceneSelector");
 const animationSelector = document.getElementById("animationSelector");
 const settingSelector = document.getElementById("settingSelector");
@@ -53,7 +58,7 @@ export function setupEventListeners() {
   canvas.addEventListener("mouseout", handleMouseOut);
   canvas.addEventListener("wheel", handleWheel);
   toggleButton.addEventListener("click", toggleSidebar);
-  folderSelector.addEventListener("change", handleFolderChange);
+  dirSelector.addEventListener("change", handleDirChange);
   sceneSelector.addEventListener("change", handleSceneChange);
   animationSelector.addEventListener("change", handleAnimationChange);
   settingSelector.addEventListener("change", handlesettingChange);
@@ -104,14 +109,14 @@ function handleMouseDown(e) {
   startX = e.clientX;
   startY = e.clientY;
   mouseDown = true;
-  isMove = e.clientX < canvas.width - 250 && e.clientX > 250;
+  isMove = e.clientX < canvas.width - sidebarWidth && e.clientX > sidebarWidth;
 }
 
 function updateCursorStyle(e) {
   document.body.style.cursor = "default";
-  if (e.clientX >= canvas.width - 250)
+  if (e.clientX >= canvas.width - sidebarWidth)
     document.body.style.cursor = `url("../cursors/rotate_right.svg"), auto`;
-  else if (e.clientX <= 250)
+  else if (e.clientX <= sidebarWidth)
     document.body.style.cursor = `url("../cursors/rotate_left.svg"), auto`;
 }
 
@@ -129,7 +134,7 @@ function handleMouseMove(e) {
     rotate +=
       (e.clientY - startY) *
       rotateStep *
-      (e.clientX >= canvas.width - 250 ? 1 : -1);
+      (e.clientX >= canvas.width - sidebarWidth ? 1 : -1);
     currentModel.rotation = rotate;
   }
   startX = e.clientX;
@@ -158,9 +163,9 @@ function toggleSidebar() {
   document.getElementById("sidebar").classList.toggle("close");
 }
 
-function handleFolderChange(e) {
-  setFolder(e.target.value);
-  setSceneIds(folders[folder]);
+function handleDirChange(e) {
+  setDir(e.target.value);
+  setSceneIds(dirFiles[dir]);
   createSceneSelector(sceneIds);
   sceneIndex = 0;
   resetValues();
